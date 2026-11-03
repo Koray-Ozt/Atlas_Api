@@ -1,6 +1,6 @@
 # Atlas API
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/Koray-Ozt/Atlas_Api/actions/workflows/ci.yml/badge.svg)](https://github.com/Koray-Ozt/Atlas_Api/actions/workflows/ci.yml)
 
 A small orders REST API built with **FastAPI**, **MongoDB** and **Pydantic**. It is a deliberately compact
 codebase (~400 lines of application code) that shows how I structure a Python backend: validated input,
