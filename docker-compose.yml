@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "127.0.0.1:27017:27017"   # exposed so the test suite can run from the host
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ping:1}).ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      ATLAS_MONGO_URI: mongodb://mongo:27017
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  benchmark:           # docker compose run --rm benchmark
+    build: .
+    profiles: ["tools"]
+    user: root           # needed to write into the bind-mounted ./benchmarks
+    command: ["python", "-m", "scripts.benchmark", "--output", "/out/RESULTS.md"]
+    environment:
+      ATLAS_MONGO_URI: mongodb://mongo:27017
+    volumes:
+      - ./benchmarks:/out
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo-data:
